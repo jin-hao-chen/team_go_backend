@@ -5,6 +5,13 @@
     + Python 3.6.2
     + Django 2.0
 
+## 项目启动
+
+    + `git clone https://github.com/jin-hao-chen/team_go_backend.git`
+    + `cd team_go_backend`
+    + `pip install -r requirements.txt` 安装 Python 的第三方依赖
+    + `python manage.py runserver 127.0.0.1:8080` 启动服务
+
 
 ## 注释要求
     
