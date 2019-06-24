@@ -6,7 +6,7 @@ from users.validators import validate_username
 
 
 class AdminInfo(AbstractUser):
-    """ 后台管理员表
+    """后台管理员表
 
     Notes
     -----
@@ -23,3 +23,7 @@ class AdminInfo(AbstractUser):
     class Meta:
         verbose_name = '管理员'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.nickname
+
