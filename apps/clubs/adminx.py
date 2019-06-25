@@ -19,6 +19,7 @@ class ClubAdmin(object):
     list_filter = ['name', 'create_time', 'brief', 'type', 'level']
     list_per_page = 10
     date_hierarchy = 'create_time'
+    style_fields = {'description': 'ueditor'}
 
 
 class NotificationAdmin(object):
@@ -28,6 +29,7 @@ class NotificationAdmin(object):
     list_filter = ['title', 'content', 'publish_date']
     list_per_page = 10
     date_hierarchy = 'publish_date'
+    style_fields = {'content': 'ueditor'}
 
 
 xadmin.site.register(Institute, InstituteAdmin)

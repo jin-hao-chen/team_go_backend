@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from users.validators import validate_username
 from clubs.models import Institute
 from clubs.models import Club
+# from ckeditor_uploader.fields import RichTextUploadingField
+from DjangoUeditor.models import UEditorField
 
 
 class AdminInfo(AbstractUser):
@@ -54,7 +56,9 @@ class User(models.Model):
     is_admin = models.BooleanField(verbose_name='是否为管理员', null=False, blank=False, default=False)
     institute = models.ForeignKey(to=Institute, on_delete=models.CASCADE, verbose_name='所属学院', null=False, blank=False)
     admission_time = models.DateField(verbose_name='入学时间', null=False, blank=False)
-    introduction = models.TextField(max_length=100, verbose_name='个人简介')
+    # introduction = models.TextField(max_length=100, verbose_name='个人简介')
+    introduction = UEditorField(verbose_name='个人简介', width=600, height=300,
+                 toolbars="full")
     icon = models.ImageField(upload_to='media/images/users/icons', default='default.jpeg')
     clubs = models.ManyToManyField(to=Club, verbose_name='加入的社团')
 

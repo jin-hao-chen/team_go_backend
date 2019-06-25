@@ -28,6 +28,7 @@ class UserAdmin(object):
     readonly_fields = ['username']
     list_per_page = 10
     date_hierarchy = 'admission_time'
+    style_fields = {'introduction': 'ueditor'}
 
 
 class TeacherAdmin(object):
