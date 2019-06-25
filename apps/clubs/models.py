@@ -22,7 +22,7 @@ class Club(models.Model):
     brief = models.TextField(max_length=100, verbose_name='社团简介', null=False, blank=False, default='')
     description = UEditorField(verbose_name='社团描述', width=600, height=300, toolbars="full",
                                imagePath="images/clubs/descriptions/", filePath="files/clubs/descriptions/")
-    icon = models.ImageField(upload_to='images/clubs/icons/', default='default.jpeg')
+    icon = models.ImageField(upload_to='images/clubs/icons/', null=True, blank=True)
     TYPE_CHOICES = (
         ('1', '学术'),
         ('2', '学艺'),
