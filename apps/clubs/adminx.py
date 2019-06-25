@@ -24,9 +24,9 @@ class ClubAdmin(object):
 
 class NotificationAdmin(object):
 
-    list_display = ['title', 'content', 'publish_date']
-    search_fields = ['title', 'content', 'publish_date']
-    list_filter = ['title', 'content', 'publish_date']
+    list_display = ['club', 'title', 'content', 'publish_date']
+    search_fields = ['club', 'title', 'content', 'publish_date']
+    list_filter = ['club', 'title', 'content', 'publish_date']
     list_per_page = 10
     date_hierarchy = 'publish_date'
     style_fields = {'content': 'ueditor'}
