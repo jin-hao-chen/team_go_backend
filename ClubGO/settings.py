@@ -92,9 +92,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'PORT': '3306',
+        'HOST': '129.211.79.59',
         'NAME': 'club_go',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': 'club_go_man',
+        'PASSWORD': '123456',
         'OPTIONS': {
             'init_command': 'SET default_storage_engine = INNODB;'
         }
