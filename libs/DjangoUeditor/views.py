@@ -32,8 +32,10 @@ def get_path_format_vars():
 
 
 def save_upload_file(PostFile, FilePath):
+    print(FilePath)
     try:
         f = open(FilePath, 'wb')
+
         for chunk in PostFile.chunks():
             f.write(chunk)
     except Exception as E:

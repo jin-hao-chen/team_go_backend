@@ -15,7 +15,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, BASE_DIR)
+# sys.path.insert(0, BASE_DIR)
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 sys.path.insert(0, os.path.join(BASE_DIR, 'libs'))
 
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'DjangoUeditor',
     'xadmin',
     'users',
+    'clubs',
+    'user_operations'
 ]
 
 MIDDLEWARE = [
@@ -92,10 +94,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'PORT': '3306',
-        'HOST': '129.211.79.59',
+        'HOST': '47.100.185.62',
         'NAME': 'club_go',
         'USER': 'club_go_man',
-        'PASSWORD': '123456',
+        'PASSWORD': 'root',
         'OPTIONS': {
             'init_command': 'SET default_storage_engine = INNODB;'
         }
