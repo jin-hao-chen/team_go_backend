@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'ckeditor',
-    'ckeditor_uploader',
     'DjangoUeditor',
     'rest_framework',
     'reversion',
@@ -150,7 +148,6 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-CKEDITOR_UPLOAD_PATH = 'clubs/descriptions/'
 
 CKEDITOR_CONFIGS = {
     'default': {

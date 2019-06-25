@@ -22,7 +22,6 @@ import xadmin
 
 urlpatterns = [
     re_path(r'^xadmin/', xadmin.site.urls),
-    re_path(r'^media/', serve, {'document_root': MEDIA_ROOT}),
+    re_path(r'^media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
     re_path(r'^ueditor/', include('DjangoUeditor.urls')),
-    # re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

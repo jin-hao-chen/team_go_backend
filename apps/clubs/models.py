@@ -1,5 +1,6 @@
 from django.db import models
 from DjangoUeditor.models import UEditorField
+import datetime
 
 
 class Institute(models.Model):
@@ -17,12 +18,10 @@ class Institute(models.Model):
 class Club(models.Model):
 
     name = models.CharField(max_length=30, verbose_name='社团名', null=False, blank=False, unique=True)
-    create_time = models.DateField(verbose_name='创建时间', null=False, blank=False)
+    create_time = models.DateField(verbose_name='创建时间', default=datetime.date.today)
     brief = models.TextField(max_length=100, verbose_name='社团简介', null=False, blank=False, default='')
-    # description = models.TextField(max_length=3000, verbose_name='社团描述', null=False, blank=False, default='')
-    # description = RichTextUploadingField('社团描述')
-    description = UEditorField(verbose_name='社团描述', width=600, height=300,
-                 toolbars="full", imagePath="clubs/images/descriptions", filePath="clubs/files/descriptions")
+    description = UEditorField(verbose_name='社团描述', width=600, height=300, toolbars="full",
+                               imagePath="images/clubs/descriptions/", filePath="files/clubs/descriptions/")
     icon = models.ImageField(upload_to='images/clubs/icons/', default='default.jpeg')
     TYPE_CHOICES = (
         ('1', '学术'),
@@ -54,7 +53,7 @@ class Notification(models.Model):
     title = models.CharField(max_length=30, verbose_name='推送标题')
     image = models.ImageField(upload_to='clubs/notifications/', verbose_name='推送图片')
     content = UEditorField(verbose_name='内容')
-    publish_date = models.DateField(verbose_name='发布时间')
+    publish_date = models.DateField(verbose_name='发布时间', default=datetime.date.today)
     club = models.ForeignKey(to=Club, on_delete=models.CASCADE, verbose_name='社团', default=None)
 
     class Meta:
