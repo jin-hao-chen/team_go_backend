@@ -18,10 +18,13 @@ from django.urls import path, re_path, include
 from django.views.static import serve
 from ClubGO.settings import MEDIA_ROOT
 
+from users.views import LoginView
+
 import xadmin
 
 urlpatterns = [
     re_path(r'^xadmin/', xadmin.site.urls),
     re_path(r'^media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
     re_path(r'^ueditor/', include('DjangoUeditor.urls')),
+    re_path(r'^login/', LoginView.as_view()),
 ]

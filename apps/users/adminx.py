@@ -25,7 +25,6 @@ class UserAdmin(object):
                      'admission_time', 'introduction', 'clubs', 'is_admin']
     list_filter = ['username', 'nickname', 'mobile', 'institute',
                    'admission_time', 'introduction', 'clubs', 'is_admin']
-    readonly_fields = ['username']
     list_per_page = 10
     date_hierarchy = 'admission_time'
     style_fields = {'introduction': 'ueditor'}

@@ -62,6 +62,21 @@
             如果觉得上面表达的不清楚, 可以添加 Examples 项, 通过代码的方式进行举例说明
         """
     ```
+   
+## 响应数据格式
+    
+    + json
+    
+    ```py
+    
+    In Headers
+        status_code = restful_code.CODE_SUCCESS
+    
+    ret_data = {
+        "detail": "Put your detail here",
+        "Other options": "Value"
+    }
+    ```
 
 ## git commit 说明
 
