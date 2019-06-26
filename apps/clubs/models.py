@@ -31,12 +31,14 @@ class Club(models.Model):
         ('5', '康乐'),
         ('6', '综合'),
         ('7', '资质'),
-        ('8', '其他')
+        ('8', '其他'),
+        ('9', '无(特殊用途)')
     )
     type = models.CharField(max_length=10, verbose_name='社团类型', choices=TYPE_CHOICES, null=False, blank=False, default=1)
     LEVEL_CHOICES = (
         ('1', '校级'),
-        ('2', '院级')
+        ('2', '院级'),
+        ('3', '无(特殊用途)')
     )
     level = models.CharField(max_length=10, choices=LEVEL_CHOICES, null=False, blank=False, default=1)
 

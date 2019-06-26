@@ -1,20 +1,22 @@
 from rest_framework.authentication import BaseAuthentication
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import APIException
 
 from users.models import Token
-from rest_framework.exceptions import AuthenticationFailed
+from users.models import User
+
+
+class LoginError(APIException):
+    pass
 
 
 class LoginAuthentication(BaseAuthentication):
 
     def authenticate(self, request):
-        """
-        Authenticate the request and return a two-tuple of (user, token).
-        """
-        token = request.META.get('HTTP_AUTHENTICATION')
+        token = request.META.get('HTTP_TOKEN')
         if not token:
-            raise AuthenticationFailed('请先登录', 0)
-        username = Token.objects.filter(token=token).values('username').first()
-        if not username:
-            raise AuthenticationFailed('用户过期', 0)
+            raise LoginError('请先登录')
+        user_id = Token.objects.filter(token=token).values('user_id')
+        if not user_id:
+            raise LoginError('用户过期')
+        username = User.objects.filter(id=user_id.first().get('user_id')).values('username').first()
         return username, token

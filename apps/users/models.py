@@ -61,7 +61,7 @@ class User(models.Model):
     # introduction = models.TextField(max_length=100, verbose_name='个人简介')
     introduction = UEditorField(verbose_name='个人简介', width=600, height=300, toolbars="full")
     icon = models.ImageField(upload_to='media/images/users/icons', null=True, blank=True)
-    clubs = models.ManyToManyField(to=Club, verbose_name='加入的社团')
+    clubs = models.ManyToManyField(to=Club, verbose_name='加入的社团', null=True, blank=True)
 
     class Meta:
         verbose_name = '用户'

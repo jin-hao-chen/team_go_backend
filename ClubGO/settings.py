@@ -15,6 +15,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 sys.path.insert(0, os.path.join(BASE_DIR, 'libs'))
 
@@ -85,6 +86,31 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ClubGO.wsgi.application'
 
+CORS_ALLOW_CREDENTIALS = True
+
+#默认可以使用的非标准请求头，需要使用自定义请求头时，就可以进行修改
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'token'
+)
+#默认请求方法
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -149,7 +175,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+# django rest framework 设置
 REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': ['rest_framework.parsers.JSONParser', 'rest_framework.parsers.FormParser'],
     'DEFAULT_AUTHENTICATION_CLASSES': ['users.authentications.LoginAuthentication'],
+    'EXCEPTION_HANDLER': 'utils.exceptions.custom_exception_handler',
 }

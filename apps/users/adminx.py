@@ -35,7 +35,6 @@ class TeacherAdmin(object):
     list_display = ['username', 'nickname', 'mobile']
     search_fields = ['username', 'nickname', 'mobile']
     list_filter = ['username', 'nickname', 'mobile']
-    readonly_fields = ['username']
     list_per_page = 10
 
 

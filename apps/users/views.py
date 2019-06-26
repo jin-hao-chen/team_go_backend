@@ -5,24 +5,37 @@ from rest_framework.response import Response
 
 from users.models import User
 from users.models import Token
-from utils import restful_code
+from utils import restful_status
 
 
 class RegisterView(APIView):
 
+    authentication_classes = []
+
     def post(self, request, *args, **kwargs):
-        status_code = 0
         ret_data = {
-            'detail': ''
+            'status': restful_status.STATUS_SUCCESS,
+            'msg': ''
         }
         username = request.data.get('username')
+        # 用户名已经存在
+        if User.objects.filter(username=username).count():
+            ret_data['status'] = restful_status.STATUS_ERROR
+            ret_data['msg'] = username + ' 用户名已经存在'
+            return Response(ret_data)
         # password is md5 code
         password = request.data.get('password')
         nickname = request.data.get('nickname')
         mobile = request.data.get('mobile')
+        admission_time = request.data.get('admission_time')
         is_admin = False
         institute_id = request.data.get('institute_id')
-        # User.objects.create()
+        # 注册用户名
+        user = User.objects.create(username=username, password=password,
+                                   nickname=nickname, is_admin=is_admin, institute_id=institute_id,
+                                   mobile=mobile, admission_time=admission_time)
+        ret_data['msg'] = username + ' 注册成功'
+        return Response(ret_data)
 
 
 class LoginView(APIView):
@@ -47,9 +60,9 @@ class LoginView(APIView):
         -------
         ret_data : DRF Response
         """
-        status_code = restful_code.CODE_SUCCESS
         ret_data = {
-            'detail': ''
+            'status': restful_status.STATUS_SUCCESS,
+            'msg': ''
         }
 
         username = request.data.get('username')
@@ -60,10 +73,10 @@ class LoginView(APIView):
             token = uuid.uuid4()
             Token.objects.update_or_create(user_id=user.get('id'),
                                            defaults={'user_id': user.get('id'), 'token': token})
-            ret_data['detail'] = '登录成功'
+            ret_data['msg'] = '登录成功'
             ret_data['username'] = username
-            return Response(ret_data, status=status_code)
-        status_code = restful_code.CODE_ERROR
-        ret_data['detail'] = '用户名或者密码错误'
-        return Response(ret_data, status=status_code)
-
+            ret_data['token'] = token
+            return Response(ret_data)
+        ret_data['status'] = restful_status.STATUS_ERROR
+        ret_data['msg'] = '用户名或者密码错误'
+        return Response(ret_data)
