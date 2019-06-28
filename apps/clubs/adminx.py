@@ -1,7 +1,9 @@
 import xadmin
+from users.models import User
 from clubs.models import Institute
 from clubs.models import Club
 from clubs.models import Notification
+from clubs.models import UserClub
 
 
 class InstituteAdmin(object):
@@ -32,6 +34,15 @@ class NotificationAdmin(object):
     style_fields = {'content': 'ueditor'}
 
 
+class UserClubAdmin(object):
+
+    list_display = ['user', 'club']
+    search_fields = ['user', 'club']
+    list_filter = ['user__username', 'club__name']
+    list_per_page = 10
+
+
 xadmin.site.register(Institute, InstituteAdmin)
 xadmin.site.register(Club, ClubAdmin)
 xadmin.site.register(Notification, NotificationAdmin)
+xadmin.site.register(UserClub, UserClubAdmin)

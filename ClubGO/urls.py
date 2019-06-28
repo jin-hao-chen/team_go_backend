@@ -20,7 +20,10 @@ from ClubGO.settings import MEDIA_ROOT
 
 from users.views import LoginView
 from users.views import RegisterView
-from clubs.views import ClubListView
+from clubs.views import ClubListViewSet
+from clubs.views import InstituteViewSet
+from users.views import UserViewSet
+from clubs.views import UserClubViewSet
 
 from rest_framework.routers import DefaultRouter
 
@@ -30,7 +33,10 @@ import xadmin
 router = DefaultRouter()
 
 # 不能有下划线, 只能是单一路径
-router.register(r'clubs', ClubListView)
+router.register(r'clubs', ClubListViewSet)
+router.register(r'institutes', InstituteViewSet)
+router.register(r'users', UserViewSet)
+router.register(r'user_club', UserClubViewSet)
 
 urlpatterns = [
     re_path(r'^api/v1/', include(router.urls)),

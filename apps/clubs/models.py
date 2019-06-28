@@ -1,6 +1,7 @@
+import datetime
+
 from django.db import models
 from DjangoUeditor.models import UEditorField
-import datetime
 
 
 class Institute(models.Model):
@@ -40,7 +41,8 @@ class Club(models.Model):
         ('2', '院级'),
         ('3', '无(特殊用途)')
     )
-    level = models.CharField(max_length=10, choices=LEVEL_CHOICES, null=False, blank=False, default=1)
+    level = models.CharField(max_length=10, choices=LEVEL_CHOICES, null=False, blank=False, default=1, verbose_name='等级')
+    persons = models.IntegerField(verbose_name='社团人数', default=0)
 
     class Meta:
         verbose_name = '社团'
@@ -64,3 +66,19 @@ class Notification(models.Model):
 
     def __str__(self):
         return '社团推送'
+
+
+class UserClub(models.Model):
+
+    """
+    在此表中的用户都是管理员
+    """
+    user = models.ForeignKey(to='users.User', verbose_name='用户', on_delete=models.CASCADE)
+    club = models.ForeignKey(to=Club, verbose_name='社团', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = '用户社团管理员表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '用户社团管理员表'

@@ -2,10 +2,16 @@ import uuid
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
+from clubs.models import Club
+from clubs.models import Institute
+from clubs.serializers import InstituteSerializer
 from users.models import User
 from users.models import Token
+from users.serializers import UserSerializer
 from utils import restful_status
+from clubs.serializers import ClubSerializer
 
 
 class RegisterView(APIView):
@@ -75,8 +81,78 @@ class LoginView(APIView):
                                            defaults={'user_id': user.get('id'), 'token': token})
             ret_data['msg'] = '登录成功'
             ret_data['username'] = username
+            ret_data['userId'] = user.get('id')
             ret_data['token'] = token
             return Response(ret_data)
         ret_data['status'] = restful_status.STATUS_ERROR
         ret_data['msg'] = '用户名或者密码错误'
+        return Response(ret_data)
+
+
+class UserViewSet(GenericViewSet):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def list(self, request, *args, **kwargs):
+        ret_data = {
+            'status': restful_status.STATUS_SUCCESS
+        }
+        club_id = request.query_params.get('clubId')
+        club = Club.objects.filter(id=club_id).first()
+        users = User.objects.filter(clubs=club)
+        ret_data['users'] = self.serializer_class(users, many=True).data
+        return Response(ret_data)
+
+    def retrieve(self, request, *args, **kwargs):
+        ret_data = {
+            'status': restful_status.STATUS_SUCCESS
+        }
+        user_id = request.META.get('PATH_INFO').split('/')[-2]
+        queryset = self.queryset
+        token = Token.objects.filter(user_id=user_id).values('token').first()
+        user = queryset.filter(id=user_id).values('id', 'username',
+                                                  'nickname', 'mobile',
+                                                  'introduction', 'institute_id',
+                                                  'admission_time').first()
+        institute_id = user.get('institute_id')
+        institute = Institute.objects.filter(id=institute_id).first()
+        institute_serializer = InstituteSerializer(institute)
+        ret_data['user'] = user
+        ret_data['institute'] = institute_serializer.data
+        if token.get('token') == request.auth:
+            # 已登录用户查看自己信息, 查询社团信息
+            clubs = Club.objects.filter(user=queryset.filter(id=user_id).first())
+            club_serializer = ClubSerializer(clubs, many=True)
+            ret_data['clubs'] = club_serializer.data
+        return Response(ret_data)
+
+    def patch(self, request, *args, **kwargs):
+        ret_data = {
+            'status': restful_status.STATUS_SUCCESS
+        }
+        user_id = request.META.get('PATH_INFO').split('/')[-2]
+        token = Token.objects.filter(user_id=user_id).values('token').first()
+        if not token:
+            ret_data['status'] = restful_status.STATUS_ERROR
+            ret_data['msg'] = '非法携带 token'
+            return Response(ret_data)
+        if token.get('token') == request.auth:
+            user = User.objects.filter(id=user_id).update(**request.data['dict'])
+        else:
+            ret_data['status'] = restful_status.STATUS_ERROR
+            ret_data['msg'] = '非法操作'
+        return Response(ret_data)
+
+    def delete(self, request, *args, **kwargs):
+        ret_data = {
+            'status': restful_status.STATUS_SUCCESS
+        }
+        user_id = request.META.get('PATH_INFO').split('/')[-2]
+        token = Token.objects.filter(user_id=user_id).first()
+        if token.token == request.auth:
+            token.delete()
+        else:
+            ret_data['status'] = restful_status.STATUS_ERROR
+            ret_data['msg'] = '非法退出'
         return Response(ret_data)
