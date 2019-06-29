@@ -24,6 +24,7 @@ from clubs.views import ClubListViewSet
 from clubs.views import InstituteViewSet
 from users.views import UserViewSet
 from clubs.views import UserClubViewSet
+from user_operations.views import ApplyViewSet
 
 from rest_framework.routers import DefaultRouter
 
@@ -37,6 +38,7 @@ router.register(r'clubs', ClubListViewSet)
 router.register(r'institutes', InstituteViewSet)
 router.register(r'users', UserViewSet)
 router.register(r'user_club', UserClubViewSet)
+router.register(r'applications', ApplyViewSet)
 
 urlpatterns = [
     re_path(r'^api/v1/', include(router.urls)),

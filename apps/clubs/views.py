@@ -68,6 +68,26 @@ class ClubListViewSet(GenericViewSet):
         ret_data['clubList'] = club_serializer.data
         return Response(ret_data)
 
+    def patch(self, request, *args, **kwargs):
+        ret_data = {
+            'status': restful_status.STATUS_SUCCESS
+        }
+        club_id = int(request.META.get('PATH_INFO').split('/')[-2])
+        user = User.objects.filter(username=request.user['username']).first()
+        if not user:
+            ret_data['status'] = restful_status.STATUS_ERROR
+            ret_data['msg'] = '用户' + request.user['username'] + '不存在'
+            return Response(ret_data)
+        club_ids = UserClub.objects.filter(user=user).values('club_id')
+        for club_id_dict in club_ids:
+            if club_id == club_id_dict['club_id']:
+                club = Club.objects.filter(id=club_id).update(**request.data.get('dict'))
+                return Response(ret_data)
+        else:
+            ret_data['status'] = restful_status.STATUS_ERROR
+            ret_data['msg'] = '你没有权限保存内容'
+        return Response(ret_data)
+
     def retrieve(self, request, *args, **kwargs):
         # 请求的 URL 在 request.META.PATH_INFO 中
         club_id = request.META.get('PATH_INFO').split('/')[-2]
