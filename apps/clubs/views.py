@@ -5,6 +5,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
 from clubs.models import Club
+from user_operations.models import Apply
 from clubs.models import Institute
 from clubs.models import UserClub
 from clubs.serializers import UserClubSerializer
@@ -56,7 +57,10 @@ class ClubListViewSet(GenericViewSet):
         user_id = request.query_params.get('userId')
         if not user_id:
             club_serializer = self.serializer_class(queryset, many=True)
-            ret_data['clubList'] = club_serializer.data
+            clubs = club_serializer.data
+            for club in clubs:
+                club['applications'] = Apply.objects.filter(club=Club.objects.filter(id=club['id']).first()).count()
+            ret_data['clubList'] = clubs
             return Response(ret_data)
         user = User.objects.filter(id=user_id).first()
         if not user:
@@ -65,7 +69,10 @@ class ClubListViewSet(GenericViewSet):
             return Response(ret_data)
         clubs = queryset.filter(user=user)
         club_serializer = self.serializer_class(clubs, many=True)
-        ret_data['clubList'] = club_serializer.data
+        clubs = club_serializer.data
+        for club in clubs:
+            club['applications'] = Apply.objects.filter(club=Club.objects.filter(id=club['id']).first()).count()
+        ret_data['clubList'] = clubs
         return Response(ret_data)
 
     def patch(self, request, *args, **kwargs):
@@ -97,6 +104,7 @@ class ClubListViewSet(GenericViewSet):
         queryset = self.queryset.filter(id=club_id).first()
         description = queryset.description
         ret_data['description'] = description
+        ret_data['required'] = queryset.required
         return Response(ret_data)
 
 

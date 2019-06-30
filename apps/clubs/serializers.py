@@ -11,10 +11,11 @@ class ClubSerializer(ModelSerializer):
 
     type = serializers.ChoiceField(choices=Club.TYPE_CHOICES, source="get_type_display")
     level = serializers.ChoiceField(choices=Club.LEVEL_CHOICES, source="get_level_display")
+    required = serializers.ChoiceField(choices=Club.REQUIRED_CHOICE, source='get_required_display')
 
     class Meta:
         model = Club
-        fields = ['id', 'name', 'brief', 'icon', 'persons', 'type', 'level']
+        fields = ['id', 'name', 'brief', 'icon', 'persons', 'type', 'level', 'required']
 
 
 class InstituteSerializer(ModelSerializer):

@@ -43,6 +43,12 @@ class Club(models.Model):
     )
     level = models.CharField(max_length=10, choices=LEVEL_CHOICES, null=False, blank=False, default=1, verbose_name='等级')
     persons = models.IntegerField(verbose_name='社团人数', default=0)
+    REQUIRED_CHOICE = (
+        ('1', '大一'),
+        ('2', '大二'),
+        ('3', '不限')
+    )
+    required = models.CharField(max_length=2, choices=REQUIRED_CHOICE, default='1', verbose_name='年级要求')
 
     class Meta:
         verbose_name = '社团'
